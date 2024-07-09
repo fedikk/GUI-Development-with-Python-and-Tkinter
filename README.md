@@ -27,15 +27,15 @@ ___
 
 ## Variables 
 
-To define an int : 
+To define an __**int**__ : 
 ```python
 x= 14 
 ```
-To define a float : 
+To define a __**float**__ : 
 ```python
 x= 14.7
 ```
-To define a String : 
+To define a __**String**__ : 
 ```python
 x= " TKinter Course " 
 ```
