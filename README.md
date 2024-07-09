@@ -25,6 +25,11 @@ ___
 
 # Section2 : Python Refresher
 
+## Get the Python Refresher code here
+To make it easier for you to refer back to the code whenever it's necessary, we've put all the code that we'll cover in this section on GitHub.
+
+You can read it and also download it here: [**Github**](https://github.com/tecladocode/python-refresher)
+
 ## Variables 
 
 To define an __**int**__ : 
@@ -41,6 +46,8 @@ Ch = " TKinter Course "
 print ( ch * 2 )
 >>> TKinter Course TKinter Course 
 ```
+
+
 
 
 ## What is Navigation2 Stack, Why do we need it ?    
