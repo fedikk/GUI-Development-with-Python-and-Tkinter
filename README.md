@@ -29,15 +29,17 @@ ___
 
 To define an __**int**__ : 
 ```python
-x= 14 
+x = 14 
 ```
 To define a __**float**__ : 
 ```python
-x= 14.7
+x = 14.7
 ```
 To define a __**String**__ : 
 ```python
-x= " TKinter Course " 
+Ch = " TKinter Course "
+print ( ch * 2 )
+>>> TKinter Course TKinter Course 
 ```
 
 
