@@ -1,6 +1,28 @@
 # GUI-Development-with-Python-and-Tkinter
 
-# ROS2 Nav2 [Navigation 2 Stack] - with SLAM and Navigation
+## Initial setup (for newer Pythonistas)
+Hey, in this lecture we'll talk about how to do Python development, just in case you're coming from a different programming language.
+
+### Python version
+I recommend you use the latest Python version. For Tkinter development you really need to use Python 3.5+ as Tkinter added new features that make our programs much nicer.
+
+### Work with Python
+By far the easiest way to quickly code in Python is to use Repl.it. It's a fast, responsive, web-based editor that allows you to code in Python and also code in Tkinter (and shows you the output!).
+
+I recommend this tool to all my students when they're starting out: [**repl**](https://repl.it)
+
+If you want to take it to the next level and have the ability to code larger projects, and you want to work in your own IDE, I usually recommend PyCharm. PyCharm has a free version called the Community Edition that is plenty powerful for almost anything you'll ever need.
+
+You can get PyCharm here: [**Pycharm**](https://www.jetbrains.com/pycharm/download/)
+
+And you'll need to get Python downloaded as well: [**Python**](https://www.python.org/)
+
+If you'd like to use a different editor, feel free to do so. I often use Visual Studio Code when I'm working on smaller files and projects.
+
+Thanks again for joining me in this course, let's get started!
+
+___ 
+
 
 ## What is Navigation2 Stack, Why do we need it ?    
 
