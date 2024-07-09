@@ -23,6 +23,23 @@ Thanks again for joining me in this course, let's get started!
 
 ___ 
 
+# Section2 : Python Refresher
+
+## Variables 
+
+To define an int : 
+```python
+x= 14 
+```
+To define a float : 
+```python
+x= 14.7
+```
+To define a String : 
+```python
+x= " TKinter Course " 
+```
+
 
 ## What is Navigation2 Stack, Why do we need it ?    
 
