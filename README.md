@@ -91,4 +91,3 @@ length = input("Length (in feet): ")
 length_feet = int (length)
 print(length_feet/10.8)
 ```
-<blockquote> OUTPUT  </blockquote>
