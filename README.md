@@ -84,10 +84,58 @@ Enter your name: fedi
 fedi
 ```
 
-<blockquote> Be careful the data type by default is **STRING**  </blockquote>
+<blockquote> Be careful the data type by default is STRING  </blockquote>
 
 ```python
 length = input("Length (in feet): ")
 length_feet = int (length)
 print(length_feet/10.8)
 ```
+
+# Lists, tuples, and sets 
+
+```python
+list = ["fedi", "ghada", "baha","emna"]
+tuple = ("fedi", "ghada", "baha","emna")
+set = {"fedi", "ghada", "baha","emna"}
+```
+<blockquote> index go from 0 --> length - 1  </blockquote>
+
+<blockquote> You can't modify a tuple  </blockquote>
+
+<blockquote> You can't have multiple element in a set ad dont have order  </blockquote>
+
+## Access to variable in a list, tuple and set 
+
+```python
+
+print (list[0])
+
+```
+to add  and delete element 
+
+```python
+
+list.append("Yosri")
+l.remove("emna")
+set.add("brahim")
+
+```
+
+## Advanced set operations
+
+```python
+
+friends = {"fedi", "ghada", "baha","emna"}
+abroad = {"fedi", "baha","emna"}
+
+local_friends = friends.difference(abroad)
+print(local_friends)
+
+```
+<blockquote> OUTPUT  </blockquote>
+
+```
+{'ghada'}
+```
+
