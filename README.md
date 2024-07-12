@@ -139,3 +139,45 @@ print(local_friends)
 {'ghada'}
 ```
 
+### usefull functions for sets 
+
+- set.union(other_set)
+- set.intersection(other_set)
+
+
+## booleans in python
+
+how we get it :
+  - comparisons: == , != , < , >, <= , >=
+
+## IF statement 
+
+the template is : 
+
+```python
+
+if ( A ) :
+  action A
+elif (B) :
+  action B
+else :
+  action C
+
+```
+
+## The 'in' keyword in Python
+
+it uses to check if an elemnt is in a list, a tuple or a set or a substring in a string 
+
+## If statements with the 'in' keyword
+
+```python
+
+user_input =input("Enter 'y' if you would like to play")
+if user_input in ("y", "Y"):
+  print("Welcome to league of legends ")
+else :
+  print(" Go Fly ")
+
+```
+
