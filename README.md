@@ -307,3 +307,65 @@ print(*head) # will be 1 2 3 4 5
 print(tail) # will be 6
 
 ```
+
+# Functions 
+
+## structure of simple function 
+
+```python
+
+def hello():
+  print("Hello World!!!")
+
+```
+
+## function args and params 
+
+```python
+
+def add(x,y):
+  result = x+y 
+  return result
+
+def say_hello(name, surname):
+  print(f"hello {name} {surname}")
+
+add(5,3)
+say_hello("pappoutssou","pappou")
+
+```
+
+How to set the default value 
+
+```python
+
+default_y = 4
+def add(x,y=default_y):
+  result = x+y 
+  print(result)
+
+add(5)  #  the result 9
+default_y = 2
+ add(5)  #  the result 7
+
+```
+How to return a value 
+
+```python
+
+def add(x,y):
+  return x+y
+
+print(add(5,8)) # the result 13
+
+
+def devide(dividend,divisor):
+  if divisor !=0:
+    return dividend / divisor
+  else:
+    return "You Fool"
+
+print(devide(15,3)) # the result will be 5
+print(devide(15,0)) # the result will be You Fool 
+
+```
