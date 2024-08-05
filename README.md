@@ -181,3 +181,34 @@ else :
 
 ```
 
+
+# The loop in Python 
+
+## While Loop 
+
+```python
+while stop_condition :
+   do 
+```
+
+infinit loop : 
+
+```python
+while 1 :
+   do
+    if cdt :
+      break
+```
+
+```python
+while True :
+   do 
+```
+
+## For Loop 
+```python
+friends = ["Fedi","Ghada","Baha","Emna","PApoutsou"]
+
+for friend in friends :
+  print(f"Bonjour mon ami {friend}")
+```
