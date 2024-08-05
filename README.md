@@ -458,5 +458,85 @@ print(apply(1,3,6,7,operator="+"))
 multiply(1,3,5) # we will get 15
 
 ```
+## Unpacking keyword arguments 
 
 
+```python
+
+def named (**kwargs):
+  print(kwargs)
+
+named(name='fedi', age=24)  # the output : {'name':'fedi','age': 24 }
+
+```
+<blockquote> If we want to have the dict value </blockquote>
+
+```python
+
+def named (name,age):
+  print(name,age)
+
+details = {'name':'fedi','age': 24 }
+named(**details)  # the output : fedi  24
+
+```
+lets make it general : 
+
+```python
+
+def named (**kwargs):
+  print(kwargs)
+
+def print_nicely(**kwargs):
+  named(**kwargs)
+for arg,value in kwargs.items():
+  print(f"{arg}:{value}")
+
+print_nicely(name='fedi', age=24)
+# {'name':'fedi','age': 24 }
+# name:fedi
+# age:24
+
+```
+__args&kwargs__
+
+```python
+
+def both (*args, **kwargs):
+  print(args)
+  print(kwargs)
+
+both (1,3,5, name="Fedi" , age=25)
+# THE OUTPUT :
+# (1,3,5)
+# {'name": "Fedi", "age":24}
+
+```
+
+<blockquote> Be patient </blockquote>
+
+```python
+
+def myfunction (**kwargs):
+  print(kwargs)
+myfunction(**"FEDI") # Error , must be mapping
+myfunction(**None) # Error , must be mapping
+```
+
+# Objected oriented Programming 
+
+```python
+class Student:
+
+   def __init__(self,name,grades):
+      self.name = name
+      self.grades=grades
+
+   def average(self):
+      return sum(self.grades) / len(self.grades)
+
+student =Student("fedi", (19,19.5,20,20,18,17.75) )
+print(student.name)
+print(student.average())
+
+```
