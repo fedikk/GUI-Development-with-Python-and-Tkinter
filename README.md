@@ -23,7 +23,7 @@ Thanks again for joining me in this course, let's get started!
 
 ___ 
 
-# Section2 : Python Refresher
+# Python Refresher
 
 ## Get the Python Refresher code here
 To make it easier for you to refer back to the code whenever it's necessary, we've put all the code that we'll cover in this section on GitHub.
