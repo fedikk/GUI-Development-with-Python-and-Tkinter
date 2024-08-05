@@ -369,3 +369,94 @@ print(devide(15,3)) # the result will be 5
 print(devide(15,0)) # the result will be You Fool 
 
 ```
+
+## Lambda functions 
+
+Your first lambda function 
+
+```python
+
+add = lambda x,y : x+y
+print(add(5,8)) # the result 13
+
+sequence = [1,3,5,7,9]
+doubled = [ (lambda x: x*2)(x) for x in sequence]
+doubled = list(map(lambda x:x*2,sequence))
+
+```
+
+##  Dictionary comprehensions
+
+```python
+users = [
+    (0,"fedi","password"),
+    (1,"Ggh","password1"),
+    (2,"Poh","password2"),
+        ]
+
+user_mapping = { user[1]: user for user in users}
+
+```
+
+##  Unpacking Arguments
+
+```python
+
+def multiply(*args):
+  print(args)
+
+multiply(1,3,5) # we will get a tuple (1,3,5)
+
+```
+
+```python
+
+def multiply(*args):
+  print(args)
+  total = 1 
+  for agr in args:
+    total = total * arg
+  return total
+
+multiply(1,3,5) # we will get 15
+
+```
+
+```python
+
+def add(x,y):
+  result = x+y 
+
+nums = [3,5]
+print(add(*nums))
+
+nums = {"x":15,"y":16}
+print(add(x=nums["x"],y=nums["y"]))
+print(add(**nums))
+
+```
+multiple args : 
+
+```python
+
+def multiply(*args):
+  print(args)
+  total = 1 
+  for agr in args:
+    total = total * arg
+  return total
+
+def apply(*args,operator):
+  if operator=="*":
+    return multiply(*args)
+  elif operator =="+":
+    return sum(args)
+  else :
+    return "No valid operator provided to apply()."
+
+print(apply(1,3,6,7,operator="+"))
+multiply(1,3,5) # we will get 15
+
+```
+
+
