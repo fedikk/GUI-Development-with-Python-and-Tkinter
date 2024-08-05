@@ -992,3 +992,526 @@ try:
 except TooManyPagesReadError as e:
     print(e)
 ```
+# First Class functions 
+
+```python
+
+# A first class function just means that functions can be passed as arguments to functions.
+
+def calculate(*values, operator):
+    return operator(*values)
+
+
+def divide(dividend, divisor):
+    if divisor != 0:
+        return dividend / divisor
+    else:
+        return "You fool!"
+
+
+# We pass the `divide` function as an argument
+result = calculate(20, 4, operator=divide)
+print(result)
+
+
+def average(*values):
+    return sum(values) / len(values)
+
+
+result = calculate(10, 20, 30, 40, operator=average)
+print(result)
+
+# -- searching with first-class functions --
+
+
+def search(sequence, expected, finder):
+    for elem in sequence:
+        if finder(elem) == expected:
+            return elem
+    raise RuntimeError(f"Could not find an element with {expected}")
+
+
+friends = [
+    {"name": "Rolf Smith", "age": 24},
+    {"name": "Adam Wool", "age": 30},
+    {"name": "Anne Pun", "age": 27},
+]
+
+
+def get_friend_name(friend):
+    return friend["name"]
+
+
+print(search(friends, "Bob Smith", get_friend_name))
+
+# -- using lambdas since this can be simple enough --
+
+
+def search(sequence, expected, finder):
+    for elem in sequence:
+        if finder(elem) == expected:
+            return elem
+    raise RuntimeError(f"Could not find an element with {expected}")
+
+
+friends = [
+    {"name": "Rolf Smith", "age": 24},
+    {"name": "Adam Wool", "age": 30},
+    {"name": "Anne Pun", "age": 27},
+]
+
+print(search(friends, "Bob Smith", lambda friend: friend["name"]))
+
+
+# -- or as an extra, using built-in functions --
+
+from operator import itemgetter
+
+
+def search(sequence, expected, finder):
+    for elem in sequence:
+        if finder(elem) == expected:
+            return elem
+    raise RuntimeError(f"Could not find an element with {expected}")
+
+
+friends = [
+    {"name": "Rolf Smith", "age": 24},
+    {"name": "Adam Wool", "age": 30},
+    {"name": "Anne Pun", "age": 27},
+]
+
+print(search(friends, "Rolf Smith", itemgetter("name")))
+
+```
+
+# Simple Decorators 
+
+```python
+user = {"username": "jose", "access_level": "guest"}
+
+
+def get_admin_password():
+    return "1234"
+
+
+print(get_admin_password())  # Can do this even though I'm a "guest"
+
+# Now this only runs if I'm an admin... but
+if user["access_level"] == "admin":
+    print(get_admin_password())
+
+print(get_admin_password())  # The function itself is still unsecured
+
+# -- "secure" function --
+
+
+def secure_get_admin():
+    if user["access_level"] == "admin":
+        print(get_admin_password())
+
+
+# Now secure_get_admin() is secure.
+# But get_admin_password() is still around, and I could call it:
+
+secure_get_admin()
+print(get_admin_password())
+
+# We want to get rid of get_admin_password so that only the secure function remains!
+# Maybe something like this?
+
+
+def secure_function(func):
+    if user["access_level"] == "admin":
+        return func
+
+
+user = {"username": "bob", "access_level": "admin"}
+
+get_admin_password = secure_function(get_admin_password)
+print(get_admin_password())  # Error!
+
+# When we ran `secure_function`, we checked the user's access level. Because at that point the user was not an admin,
+# the function did not `return func`. Therefore `get_admin_password` is set to `None`.
+
+# We want to delay overwriting until we run the function
+
+
+def get_admin_password():
+    return "1234"
+
+
+def make_secure(func):
+    def secure_function():
+        if user["access_level"] == "admin":
+            return func()
+
+    return secure_function
+
+
+get_admin_password = make_secure(
+    get_admin_password
+)  # `get_admin_password` is now `secure_func` from above
+
+user = {"username": "jose", "access_level": "guest"}
+print(get_admin_password())  # Now we check access level
+
+user = {"username": "bob", "access_level": "admin"}
+print(get_admin_password())  # Now we check access level
+
+# -- More information or error handling --
+
+
+def get_admin_password():
+    return "1234"
+
+
+def make_secure(func):
+    def secure_function():
+        if user["access_level"] == "admin":
+            return func()
+        else:
+            return f"No admin permissions for {user['username']}."
+
+    return secure_function
+
+
+get_admin_password = make_secure(
+    get_admin_password
+)  # `get_admin_password` is now `secure_func` from above
+
+user = {"username": "jose", "access_level": "guest"}
+print(get_admin_password())  # Now we check access level
+
+user = {"username": "bob", "access_level": "admin"}
+print(get_admin_password())  # Now we check access level
+
+```
+
+# The 'At' syntax 
+
+```python
+
+user = {"username": "jose", "access_level": "guest"}
+
+def make_secure(func):
+    def secure_function():
+        if user["access_level"] == "admin":
+            return func()
+        else:
+            return f"No admin permissions for {user['username']}."
+
+    return secure_function
+
+
+@make_secure
+def get_admin_password():
+    return "1234"
+
+
+# -- keeping function name and docstring --
+import functools
+
+
+user = {"username": "jose", "access_level": "guest"}
+
+
+def make_secure(func):
+    @functools.wraps(func)
+    def secure_function():
+        if user["access_level"] == "admin":
+            return func()
+        else:
+            return f"No admin permissions for {user['username']}."
+
+    return secure_function
+
+
+@make_secure
+def get_admin_password():
+    return "1234"
+
+```
+
+# Decorating functions with params
+
+```python
+
+import functools
+
+
+user = {"username": "jose", "access_level": "guest"}
+
+
+def make_secure(func):
+    @functools.wraps(func)
+    def secure_function(panel):
+        if user["access_level"] == "admin":
+            return func(panel)
+        else:
+            return f"No admin permissions for {user['username']}."
+
+    return secure_function
+
+
+@make_secure
+def get_password(panel):
+    if panel == "admin":
+        return "1234"
+    elif panel == "billing":
+        return "super_secure_password"
+
+
+# print(get_password("admin"))  # Error before adding parameters, works after
+# But now we've coupled our function to our decorator. We can't decorate a different function, which isn't great!
+# Instead we could take unlimited parameters and pass whatever we get down to the original function
+
+
+def make_secure(func):
+    @functools.wraps(func)
+    def secure_function(*args, **kwargs):
+        if user["access_level"] == "admin":
+            return func(*args, **kwargs)
+        else:
+            return f"No admin permissions for {user['username']}."
+
+    return secure_function
+
+
+@make_secure
+def get_password(panel):
+    if panel == "admin":
+        return "1234"
+    elif panel == "billing":
+        return "super_secure_password"
+
+
+print(get_password("admin"))
+print(get_password("billing"))
+
+user = {"username": "bob", "access_level": "admin"}
+
+print(get_password("admin"))
+print(get_password("billing"))
+
+```
+
+# Decorator with params 
+
+```python
+import functools
+
+user = {"username": "anna", "access_level": "user"}
+
+
+def make_secure(func):
+    @functools.wraps(func)
+    def secure_function(*args, **kwargs):
+        if user["access_level"] == "admin":
+            return func(*args, **kwargs)
+        else:
+            return f"No admin permissions for {user['username']}."
+
+    return secure_function
+
+
+@make_secure
+def get_admin_password():
+    return "admin: 1234"
+
+
+@make_secure
+def get_dashboard_password():
+    return "user: user_password"
+
+
+# What if we wanted some passwords to be available to "user" and others to "admin" ?
+
+user = {"username": "anna", "access_level": "user"}
+
+
+def make_secure(access_level):
+    def decorator(func):
+        @functools.wraps(func)
+        def secure_function(*args, **kwargs):
+            if user["access_level"] == access_level:
+                return func(*args, **kwargs)
+            else:
+                return f"No {access_level} permissions for {user['username']}."
+
+        return secure_function
+
+    return decorator
+
+
+@make_secure(
+    "admin"
+)  # This runs the make_secure function, which returns decorator. Essentially the same to doing `@decorator`, which is what we had before.
+def get_admin_password():
+    return "admin: 1234"
+
+
+@make_secure("user")
+def get_dashboard_password():
+    return "user: user_password"
+
+
+print(get_admin_password())
+print(get_dashboard_password())
+
+user = {"username": "anna", "access_level": "admin"}
+
+print(get_admin_password())
+print(get_dashboard_password())
+
+```
+
+# Mutability 
+
+```python
+
+a = []
+b = a
+
+# Remember a and b are _names_ for the list. They both have the _same_ value.
+
+a.append(35)  # Modify the value.
+
+print(a)
+print(b)
+
+# We mutated (changed) the value, its names still point to the _same thing_, so it doesn't matter which name you use.
+
+a = []
+b = []
+
+a.append(35)
+
+print(a)
+print(b)
+
+# Here they are different lists, because [] creates a new list every time. You can check whether two things are the _same_ one by usingt the `id()` function:
+
+print(id(a))
+print(id(b))  # Different from id(a)
+
+# -- immutable --
+
+# Some values can't be changed because they don't have methods that modify the value itself.
+# In case of the list, `.append()` mutates the list.
+# For example integers don't have any such methods, so they are called _immutable_.
+
+a = 8597
+b = 8597
+
+print(id(a))
+print(id(b))  # Same one
+
+a = 8598
+
+print(id(a))
+print(
+    id(b)
+)  # Different, because we didn't change 8597. We just used the name 'a' for a different value. 'b' still is a name for 8597.
+
+# Most things are mutable in Python. If you want to keep one of your classes immutable, don't add any methods that change the objects' properties.
+
+# Tuples and strings are the only fundamental collection in Python which is immutable.
+# Lists, sets, dictionaries are all mutable.
+# Integers, floats, and booleans are all immutable.
+
+# -- += and similar --
+
+# A lot of beginners think this:
+
+a = "hello"
+b = a
+
+print(id(a))
+print(id(b))
+
+a += "world"
+
+# Would cause 'b' to change
+# But it doesn't, because strings are immutable. When you do str + str, a _new_ string is created.
+# This means that a becomes a new string containing "helloworld", but b still is a name for "hello".
+
+print(id(a))
+print(id(b))
+
+```
+
+# Mutability 
+
+```python
+
+a = []
+b = a
+
+# Remember a and b are _names_ for the list. They both have the _same_ value.
+
+a.append(35)  # Modify the value.
+
+print(a)
+print(b)
+
+# We mutated (changed) the value, its names still point to the _same thing_, so it doesn't matter which name you use.
+
+a = []
+b = []
+
+a.append(35)
+
+print(a)
+print(b)
+
+# Here they are different lists, because [] creates a new list every time. You can check whether two things are the _same_ one by usingt the `id()` function:
+
+print(id(a))
+print(id(b))  # Different from id(a)
+
+# -- immutable --
+
+# Some values can't be changed because they don't have methods that modify the value itself.
+# In case of the list, `.append()` mutates the list.
+# For example integers don't have any such methods, so they are called _immutable_.
+
+a = 8597
+b = 8597
+
+print(id(a))
+print(id(b))  # Same one
+
+a = 8598
+
+print(id(a))
+print(
+    id(b)
+)  # Different, because we didn't change 8597. We just used the name 'a' for a different value. 'b' still is a name for 8597.
+
+# Most things are mutable in Python. If you want to keep one of your classes immutable, don't add any methods that change the objects' properties.
+
+# Tuples and strings are the only fundamental collection in Python which is immutable.
+# Lists, sets, dictionaries are all mutable.
+# Integers, floats, and booleans are all immutable.
+
+# -- += and similar --
+
+# A lot of beginners think this:
+
+a = "hello"
+b = a
+
+print(id(a))
+print(id(b))
+
+a += "world"
+
+# Would cause 'b' to change
+# But it doesn't, because strings are immutable. When you do str + str, a _new_ string is created.
+# This means that a becomes a new string containing "helloworld", but b still is a name for "hello".
+
+print(id(a))
+print(id(b))
+
+```
