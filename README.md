@@ -285,3 +285,25 @@ for name , age  in friends_ages.items():
   print(f"The age of {name} : {age}") 
 
 ```
+
+# Destructing variables 
+
+```python
+
+t = 14 , 18  # t will be a tuple 
+x, y = t     # x will get the first value and y the second 
+print(x,y)
+
+```
+
+```python
+
+head, *tail = [1,2,3,4,5,6]
+print(head) # will be 1
+print(tail) # will be [2,3,4,5,6]
+
+*head, tail = [1,2,3,4,5,6]
+print(*head) # will be 1 2 3 4 5
+print(tail) # will be 6
+
+```
