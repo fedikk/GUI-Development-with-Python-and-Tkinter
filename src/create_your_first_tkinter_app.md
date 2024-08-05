@@ -154,3 +154,4 @@ root.mainloop()
 
 ![image](https://github.com/user-attachments/assets/2ccbeb67-11c8-4147-a532-49fe378cc1d6)
 
+# Packing components
