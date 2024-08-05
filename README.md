@@ -206,9 +206,47 @@ while True :
 ```
 
 ## For Loop 
-```python
-friends = ["Fedi","Ghada","Baha","Emna","PApoutsou"]
 
+```python
+
+friends = ["Fedi","Ghada","Baha","Emna","PApoutsou"]
 for friend in friends :
   print(f"Bonjour mon ami {friend}")
+for i in range(10):
+  print(f"Compteur= {i}")
+
+```
+
+# List comprehensions 
+
+```python
+
+numbers = [1,3,5,7,9]
+dubled =[]
+for i in numbers:
+  doubled.append(i*2)
+
+```
+The Second way : 
+
+```python
+
+numbers = [1,3,5,7,9]
+dubled =[num*2 for num in numbers]
+
+```
+
+```python
+
+friends = ["Fedi","Ghada","Baha","Emna","Papoutsou"]
+strats_s = [ friend for friend in friends if friend.startswith("S") ]
+
+```
+
+## Dictionaries  
+
+```python
+
+friends_ages = {"fedi": 24, "ghada": 24, "pappoutsou":23, "pohpoh":24}
+
 ```
