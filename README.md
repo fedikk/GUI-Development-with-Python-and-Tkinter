@@ -248,5 +248,40 @@ strats_s = [ friend for friend in friends if friend.startswith("S") ]
 ```python
 
 friends_ages = {"fedi": 24, "ghada": 24, "pappoutsou":23, "pohpoh":24}
+friends_ages["emna"]= 25
+print(friends_ages["pappoutsou"])
+print(friends_ages)
+
+```
+
+List of dict : 
+
+```python
+
+friends = [
+  {"name": "fedi", "age": 24}
+  {"name": "ghada", "age": 24}
+  {"name": "pappoutsou", "age": 23}
+          ]
+print(friends[1]["name"])
+
+```
+
+How to parcour a dict : 
+
+```python
+
+friends_ages = {"fedi": 24, "ghada": 24, "pappoutsou":23, "pohpoh":24}
+for key in friends_ages:
+  print(f"The age of {key} : {friends_ages[key]}") 
+
+```
+how to get the key and the value : 
+
+```python
+
+friends_ages = {"fedi": 24, "ghada": 24, "pappoutsou":23, "pohpoh":24}
+for name , age  in friends_ages.items():
+  print(f"The age of {name} : {age}") 
 
 ```
