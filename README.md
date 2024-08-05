@@ -540,3 +540,455 @@ print(student.name)
 print(student.average())
 
 ```
+
+## Magic methods: __str__ and __repr__
+
+In Python, "magic methods" (also known as dunder methods or special methods) are methods with double underscores before and after their names. They allow you to define how objects of a class should behave with respect to built-in operations and functions. These methods enable custom behavior for operators, type conversion, attribute access, and more.
+
+### Print method 
+
+```python
+class Student:
+
+    def __init__(self,name,age,grades):
+      self.name = name
+      self.age= age
+      self.grades=grades
+
+    def average(self):
+      return sum(self.grades) / len(self.grades)
+
+    def __str__(self):
+      return (f"hello my name is {self.name}, and i'am {self.age} Yo}
+
+    def __repr__(self):
+      return f"<Student({self.name},{self.age})"
+
+student =Student("fedi",24, (19,19.5,20,20,18,17.75) )
+print(student) # student.__str__
+
+```
+**if str was not defined and repr is print will be the repr function**
+
+# Class Methods and static method 
+
+```python
+class ClassTest:
+    def instance_method(self):
+        print(f"Called instance_method of {self}")
+
+    @classmethod
+    def class_method(cls):
+        print(f"Called class_method of {cls}")
+
+    @staticmethod
+    def static_method():
+        print(f"Called static_method. We don't get any object or class info here.")
+
+
+instance = ClassTest()
+instance.instance_method()
+
+ClassTest.class_method()
+ClassTest.static_method()
+
+# -- What are they used for? --
+
+# Instance methods are used for most things. When you want to produce an action that uses the data stored in an object.
+# Static methods are used to just place a method inside a class because you feel it
+# belongs there (i.e. for code organisation, mostly!)
+# Class methods are often used as factories.
+
+
+class Book:
+    TYPES = ("hardcover", "paperback")
+
+    def __init__(self, name, book_type, weight):
+        self.name = name
+        self.book_type = book_type
+        self.weight = weight
+
+    def __repr__(self):
+        return f"<Book {self.name}, {self.book_type}, weighing {self.weight}g>"
+
+    @classmethod
+    def hardcover(cls, name, page_weight):
+        return cls(name, cls.TYPES[0], page_weight + 100)
+
+    @classmethod
+    def paperback(cls, name, page_weight):
+        return cls(name, cls.TYPES[1], page_weight)
+
+
+heavy = Book.hardcover("Harry Potter", 1500)
+light = Book.paperback("Python 101", 600)
+
+print(heavy)
+print(light)
+
+```
+
+
+# Class inheritence 
+
+```python
+class Device:
+    def __init__(self, name, connected_by):
+        self.name = name
+        self.connected_by = connected_by
+        self.connected = True
+
+    def __str__(self):
+        return f"Device {self.name!r} ({self.connected_by})"
+
+    def disconnect(self):
+        self.connected = False
+
+
+# printer = Device("Printer", "USB")
+# print(printer)
+
+# We don't want to add printer-specific stuff to Device, so...
+
+
+class Printer(Device):
+    def __init__(self, name, connected_by, capacity):
+        # super(Printer, self).__init__(name, connected_by)  - Python2.7
+        super().__init__(name, connected_by)  # Python3+
+        self.capacity = capacity
+        self.remaining_pages = capacity
+
+    def __str__(self):
+        return f"{super().__str__()} ({self.remaining_pages} pages remaining)"
+
+    def print(self, pages):
+        if not self.connected:
+            raise TypeError("Device is disconnected at this time, cannot print.")
+        print(f"Printing {pages} pages.")
+        self.remaining_pages -= pages
+
+
+printer = Printer("Printer", "USB", 500)
+printer.print(20)
+print(printer)
+printer.print(50)
+print(printer)
+printer.disconnect()
+printer.print(30)  # Error
+```
+
+## Class Composition
+
+```python
+
+# Something I see a lot, but you SHOULDN'T DO
+
+
+class BookShelf:
+    def __init__(self, quantity):
+        self.quantity = quantity
+
+    def __str__(self):
+        return f"BookShelf with {self.quantity} books."
+
+
+shelf = BookShelf(300)
+
+
+class Book(BookShelf):
+    def __init__(self, name, quantity):
+        super().__init__(quantity)
+        self.name = name
+
+
+# This makes no sense, because now you need to pass `quantity` to a single book:
+
+book = Book("Harry Potter", 120)
+print(book)  # What?
+
+# -- Composition over inheritance here --
+
+# Inheritance: "A Book is a BookShelf"
+# Composition: "A BookShelf has many Books"
+
+
+class BookShelf:
+    def __init__(self, *books):
+        self.books = books
+
+    def __str__(self):
+        return f"BookShelf with {len(self.books)} books."
+
+
+class Book:
+    def __init__(self, name):
+        self.name = name
+
+
+book = Book("Harry Potter")
+book2 = Book("Python 101")
+shelf = BookShelf(book, book2)
+print(shelf)
+
+```
+# Type hinting in Python 3.5+
+
+```python
+
+def list_avg(sequence: list) -> float:
+    return sum(sequence) / len(sequence)
+
+
+# -- Type hinting classes --
+
+
+class Book:
+    def __init__(self, name: str, page_count: int):
+        self.name = name
+        self.page_count = page_count
+
+
+# -- Lists and collections --
+
+from typing import List  # , Tuple, Set, etc...
+
+
+class BookShelf:
+    def __init__(self, books: List[Book]):
+        self.books = books
+
+    def __str__(self) -> str:
+        return f"BookShelf with {len(self.books)} books."
+
+
+# Key benefit is now you'll get told if you pass in the wrong thing...
+
+book = Book(
+    "Harry Potter", "352"
+)  # Suggests this is incorrect if you have a tool that will analyse your code (e.g. PyCharm or Pylint)
+shelf = BookShelf(book)  # Suggests this is incorrect too
+# Type hinting is that: hints. It doesn't stop your code from working... although it can save you at times!
+
+# -- Hinting the current object --
+
+
+class Book:
+    TYPES = ("hardcover", "paperback")
+
+    def __init__(self, name: str, book_type: str, weight: int):
+        self.name = name
+        self.book_type = book_type
+        self.weight = weight
+
+    def __repr__(self) -> str:
+        return f"<Book {self.name}, {self.book_type}, weighing {self.weight}g>"
+
+    @classmethod
+    def hardcover(cls, name: str, page_weight: int) -> "Book":
+        return cls(name, cls.TYPES[0], page_weight + 100)
+
+    @classmethod
+    def paperback(cls, name: str, page_weight: int) -> "Book":
+        return cls(name, cls.TYPES[1], page_weight)
+
+```
+
+# imports in python 
+
+we have to file one is : 
+## mymodule.py
+
+```python
+
+def divide(dividend, divisor):
+    return dividend / divisor
+
+
+print("mymodule.py:", __name__)
+
+# -- importing from a folder --
+
+import libs.mylib
+
+print("mymodule.py:", __name__)
+
+```
+the second is 
+## code.py
+
+```python
+
+# -- importing --
+
+from mymodule import divide
+
+print(divide(10, 2))
+
+# -- __name__ --
+
+print(__name__)
+
+# -- importing with names --
+
+import mymodule
+
+print("code.py: ", __name__)
+
+# How does Python know where `mymodule` is?
+# Answer, it looks at the paths in sys.path in order:
+
+import sys
+
+print(sys.path)
+
+# The first path is the folder containing the file that you ran.
+# The second path is the environment variable PYTHONPATH, if it is set.
+# We won't cover environment variables in depth here, but they are variables you can set in your operating system.
+# It can help Python find things to import when the folder structure is ambiguous.
+
+# -- circular imports --
+# Make mymodule.py import code.py as well.
+
+# -- importing from a folder --
+
+import mymodule
+
+print("code.py: ", __name__)
+
+import sys
+
+print(sys.modules)
+
+```
+
+# Errors in python 
+## code.py
+
+```python
+def divide(dividend, divisor):
+    if divisor == 0:
+        raise ZeroDivisionError("Divisor cannot be 0.")
+
+    return dividend / divisor
+
+
+grades = []  # Imagine we have no grades yet
+# average = divide(sum(grades) / len(grades))  # Error!
+
+try:
+    average = divide(sum(grades), len(grades))
+    print(average)
+except ZeroDivisionError as e:
+    print(e)
+    # Much friendlier error message because now we're dealing with it
+    # In a "students and grades" context, not purely in a mathematical context
+    # I.e. it doesn't make sense to put "There are no grades yet in your list"
+    # inside the `divide` function, because you could be dividing something
+    # that isn't grades, in another program.
+    print("There are no grades yet in your list.")
+
+# -- Built-in errors --
+
+# TypeError: something was the wrong type
+# ValueError: something had the wrong value
+# RuntimeError: most other things
+
+# Full list of built-in errors: https://docs.python.org/3/library/exceptions.html
+
+
+# -- Doing something if no error is raised --
+
+grades = [90, 100, 85]
+
+try:
+    average = divide(sum(grades), len(grades))
+except ZeroDivisionError:
+    print("There are no grades yet in your list.")
+else:
+    print(f"The average was {average}")
+
+
+# -- Doing something no matter what --
+# This is particularly useful when dealing with resources that you open and then must close
+# The `finally` part always runs, so you could use it to close things down
+# You can also use it to print something at the end of your try-block if you like.
+
+students = [
+    {"name": "Bob", "grades": [75, 90]},
+    {"name": "Rolf", "grades": []},
+    {"name": "Jen", "grades": [100, 90]},
+]
+
+try:
+    for student in students:
+        name = student["name"]
+        grades = student["grades"]
+        average = divide(sum(grades), len(grades))
+        print(f"{name} averaged {average}.")
+except ZeroDivisionError:
+    print(f"ERROR: {name} has no grades!")
+else:
+    print("-- All student averages calculated --")
+finally:
+    print("-- End of student average calculation --")
+```
+
+
+# Custom error classes 
+
+```python
+
+class Book:
+    def __init__(self, name: str, page_count: int):
+        self.name = name
+        self.page_count = page_count
+        self.pages_read = 0
+
+    def __repr__(self):
+        return (
+            f"<Book {self.name}, read {self.pages_read} pages out of {self.page_count}>"
+        )
+
+    def read(self, pages: int):
+        self.pages_read += pages
+        print(f"You have now read {self.pages_read} pages out of {self.page_count}")
+
+
+python101 = Book("Python 101", 50)
+python101.read(35)
+python101.read(50)  # Whaaaat
+
+# -- Errors used to prevent things from happening --
+
+
+class TooManyPagesReadError(ValueError):
+    pass
+
+
+class Book:
+    def __init__(self, name: str, page_count: int):
+        self.name = name
+        self.page_count = page_count
+        self.pages_read = 0
+
+    def __repr__(self):
+        return (
+            f"<Book {self.name}, read {self.pages_read} pages out of {self.page_count}>"
+        )
+
+    def read(self, pages: int):
+        if self.pages_read + pages > self.page_count:
+            raise TooManyPagesReadError(
+                f"You tried to read {self.pages_read + pages} pages, but this book only has {self.page_count} pages."
+            )
+        self.pages_read += pages
+        print(f"You have now read {self.pages_read} pages out of {self.page_count}")
+
+
+python101 = Book("Python 101", 50)
+try:
+    python101.read(35)
+    python101.read(50)  # This now raises an error, which has a helpful name and a helpful error message.
+except TooManyPagesReadError as e:
+    print(e)
+```
