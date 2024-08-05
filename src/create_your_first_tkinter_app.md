@@ -100,6 +100,57 @@ greet_button = ttk.Button(root, text="Greet", command=greet).pack(side="left", f
 
 quit_button = ttk.Button(root,text="Quit",command=root.destroy).pack(side="left")
 root.mainloop()
+
 ```
 
 ![image](https://github.com/user-attachments/assets/66d16e76-4827-4e6e-8a72-31788c48ab5b)
+
+
+```python
+import tkinter as tk
+import tkinter  as ttk
+
+def greet():
+    print("Hello World!!!")
+
+root = tk.Tk()
+
+greet_button = ttk.Button(root, text="Greet", command=greet).pack(side="left", fill="both",expand=True)
+
+quit_button = ttk.Button(root,text="Quit",command=root.destroy).pack(side="left",fill="both",expand=True)
+root.mainloop()
+
+```
+![image](https://github.com/user-attachments/assets/8fffb0ae-cb81-416e-8d63-f8b8effff224)
+
+
+# Creating a Greating App 
+
+```python
+import tkinter as tk
+import tkinter  as ttk
+
+def greet():
+    print(f"Hello {user_name.get()}!!!")
+
+root = tk.Tk()
+
+user_name = tk.StringVar()
+
+name_label = ttk.Label(root,text="Name: ")
+name_label.pack(side="left",padx=(0,10))
+name_entry = ttk.Entry(root, width=15, textvariable=user_name)
+name_entry.pack(side="left")
+name_entry.focus()
+
+
+greet_button = ttk.Button(root, text="Greet", command=greet).pack(side="left", fill="both",expand=True)
+
+quit_button = ttk.Button(root,text="Quit",command=root.destroy).pack(side="left",fill="both",expand=True)
+
+
+root.mainloop()
+```
+
+![image](https://github.com/user-attachments/assets/2ccbeb67-11c8-4147-a532-49fe378cc1d6)
+
