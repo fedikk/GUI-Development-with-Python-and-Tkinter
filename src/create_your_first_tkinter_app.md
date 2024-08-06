@@ -289,3 +289,177 @@ root.mainloop()
 
 # The Grid geometry manager
 
+```python
+import tkinter as tk
+import tkinter  as ttk
+
+def greet():
+    print(f"Hello {user_name.get()}!!!")
+
+root = tk.Tk()
+
+user_name = tk.StringVar()
+
+input_frame = ttk.Frame(root, padx=20,pady=20)
+input_frame.grid()
+
+
+
+name_label = ttk.Label(input_frame,text="Name: ")
+name_label.grid(padx=(0,10))
+
+
+name_entry = ttk.Entry(input_frame, width=15, textvariable=user_name)
+name_entry.grid()
+name_entry.focus()
+
+
+button_frame = ttk.Frame(root, padx=20,pady=10)
+button_frame.grid( )
+
+greet_button = ttk.Button(button_frame, text="Greet", command=greet).grid()
+
+quit_button = ttk.Button(button_frame,text="Quit",command=root.destroy).grid()
+
+
+root.mainloop()
+
+```
+![image](https://github.com/user-attachments/assets/d5c3ebcf-f07a-42d2-be5b-322b1e16cb24)
+
+```python
+import tkinter as tk
+import tkinter  as ttk
+
+def greet():
+    print(f"Hello {user_name.get()}!!!")
+
+root = tk.Tk()
+root.title("Greeter")
+
+root.columnconfigure(0, weight=1)
+
+
+
+user_name = tk.StringVar()
+
+input_frame = ttk.Frame(root, padx=20,pady=20)
+input_frame.grid(row=0,column=0)
+
+
+
+name_label = ttk.Label(input_frame,text="Name: ")
+name_label.grid(row=0,column=0,padx=(0,10))
+
+
+name_entry = ttk.Entry(input_frame, width=15, textvariable=user_name)
+name_entry.grid(row=0,column=1)
+name_entry.focus()
+
+
+button_frame = ttk.Frame(root, padx=20,pady=10)
+button_frame.grid()
+
+greet_button = ttk.Button(button_frame, text="Greet", command=greet).grid(row=0,column=0)
+
+quit_button = ttk.Button(button_frame,text="Quit",command=root.destroy).grid(row=0,column=1)
+
+
+root.mainloop()
+
+```
+![image](https://github.com/user-attachments/assets/cbe6be9e-5d9e-42d9-9212-8a06cdeaf283)
+
+### Sticky buttons 
+
+```python
+
+import tkinter as tk
+import tkinter  as ttk
+
+def greet():
+    print(f"Hello {user_name.get()}!!!")
+
+root = tk.Tk()
+root.title("Greeter")
+
+root.columnconfigure(0, weight=1)
+
+
+
+user_name = tk.StringVar()
+
+input_frame = ttk.Frame(root, padx=20,pady=20)
+input_frame.grid(row=0,column=0)
+
+
+
+name_label = ttk.Label(input_frame,text="Name: ")
+name_label.grid(row=0,column=0,padx=(0,10))
+
+
+name_entry = ttk.Entry(input_frame, width=15, textvariable=user_name)
+name_entry.grid(row=0,column=1)
+name_entry.focus()
+
+
+button_frame = ttk.Frame(root, padx=20,pady=10)
+button_frame.grid(sticky="EW")
+
+greet_button = ttk.Button(button_frame, text="Greet", command=greet).grid(row=0,column=0)
+
+quit_button = ttk.Button(button_frame,text="Quit",command=root.destroy).grid(row=0,column=1)
+
+
+root.mainloop()
+
+```
+![image](https://github.com/user-attachments/assets/45327325-d4a2-4204-be15-26a6d187bfe9)
+
+# Sticky & columnconfigure
+
+```python
+import tkinter as tk
+import tkinter  as ttk
+
+def greet():
+    print(f"Hello {user_name.get()}!!!")
+
+root = tk.Tk()
+root.title("Greeter")
+
+root.columnconfigure(0, weight=1)
+
+
+
+user_name = tk.StringVar()
+
+input_frame = ttk.Frame(root, padx=20,pady=20)
+input_frame.grid(row=0,column=0)
+
+
+
+name_label = ttk.Label(input_frame,text="Name: ")
+name_label.grid(row=0,column=0,padx=(0,10))
+
+
+name_entry = ttk.Entry(input_frame, width=15, textvariable=user_name)
+name_entry.grid(row=0,column=1)
+name_entry.focus()
+
+
+button_frame = ttk.Frame(root, padx=20,pady=10)
+button_frame.grid(sticky="EW")
+
+button_frame.columnconfigure(0,weight=1)
+button_frame.columnconfigure(1,weight=1)
+
+greet_button = ttk.Button(button_frame, text="Greet", command=greet).grid(row=0,column=0,sticky="EW")
+
+quit_button = ttk.Button(button_frame,text="Quit",command=root.destroy).grid(row=0,column=1,sticky="EW")
+
+
+root.mainloop()
+
+```
+![image](https://github.com/user-attachments/assets/8f9eff42-f189-4c30-a1de-d5a1a8784521)
