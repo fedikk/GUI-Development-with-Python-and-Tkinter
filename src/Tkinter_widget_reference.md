@@ -120,3 +120,66 @@ root.mainloop()
 ```
 
 ![image](https://github.com/user-attachments/assets/2426b7ef-3dc0-480b-96f0-4c9706e55155)
+
+<blockquote> Dont FORGET </blockquote>
+
+#### create separator with ttk.separator(orient)
+#### orient can be "vertical" or "horizental"
+#### By default separator are 1px in size 
+#### Remember to set fill and sticky property to adjust their size
+
+# CheckButtons in TK
+
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# -- Windows only configuration --
+try:
+    from ctypes import windll
+    windll.shcore.SetProcessDpiAwareness(1)
+except:
+    pass
+# -- End Windows only configuration --
+
+
+root = tk.Tk()
+root.geometry("600x400")
+root.resizable(False,False)
+root.title("Tkinter Separators")
+
+selected_option = tk.StringVar()
+
+
+def print_current_option():
+    print(selected_option.get())
+
+
+check_btn = ttk.Checkbutton(
+                            root,
+                            text="Click ME!!!", 
+                            variable=selected_option,
+                            command=print_current_option,
+                            onvalue="ON",
+                            offvalue="OFF"
+                            )
+check_btn.pack()
+
+root.mainloop()
+
+```
+## On Click 
+
+![image](https://github.com/user-attachments/assets/f1460e1d-bf1c-4b42-aa7b-df73874d982b)
+
+## OFF Click 
+
+![image](https://github.com/user-attachments/assets/4f0e49ad-fb47-41b1-82f3-d463c8c01f5e)
+
+
+<blockquote> Dont FORGET </blockquote>
+
+#### create check button  with <<ttk.checkbutton(text,variable)>>
+#### variable should be  tk.StringVar()
+#### Can attach command, a function that runs when the button is checked or unchecked 
+#### onvalue and offvalue determinate what value the variable will take 
